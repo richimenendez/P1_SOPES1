@@ -12,19 +12,9 @@
 #include <linux/timekeeping.h>
 
 static int my_proc_show(struct seq_file *m, void *v){
-	unsigned long get_time;
-    int sec, hr, min, tmp1, tmp2;
-  
-    
-    get_time = ktime_get_real_seconds();
+	struct sysinfo systema;
 
-    sec = get_time % 60;
-    tmp1 = get_time / 60;
-    min = tmp1 % 60;
-    tmp2 = tmp1 / 60;
-    hr = (tmp2 % 24);
-
-    seq_printf(m, "<h1> Hora  %d:%d:%d </h1>",hr, min, sec);
+    seq_printf(m, "Tottal de Ram: %d  Free Ram:%d  Mem Unit:   %d",systema.totalram, systema.freeram, systema.mem_unit);
    
     return 0;
 }

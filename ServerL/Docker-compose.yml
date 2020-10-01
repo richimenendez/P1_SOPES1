@@ -1,0 +1,96 @@
+version: '3.7'
+
+services:
+  frontend:
+    build: ./frontend-container
+    ports:
+      - "80:3000"
+    depends_on:
+      - micro-servicio-auth
+      - micro-servicio-productos
+      - micro-servicio-ordenes
+    networks:
+      - frontend-network
+
+  micro-servicio-auth: # Ricardo
+    build: ./auth_microservice
+    # Exponemos el puerto 80 para que sea accesible para los otros servicios.
+    expose:
+      - "80"
+    ports: 
+      - "3002:80"
+    depends_on:
+      - database
+    networks:
+      - backend-network
+      - frontend-network
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      # MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_PORT: ${MYSQL_PORT}
+
+  micro-servicio-productos: # Cux
+    build: ./microservicio2
+    # image: robertocux1/microservicio2
+    # Exponemos el puerto 80 para que sea accesible para los otros servicios.
+    expose:
+      - "80"
+    ports: 
+      - "3001:80"
+    depends_on:
+      - database
+    networks:
+      - backend-network
+      - frontend-network
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      # MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_PORT: ${MYSQL_PORT}
+      
+  micro-servicio-ordenes: # Hugo
+    build: ./microservicio3
+    # Exponemos el puerto 80 para que sea accesible para los otros servicios.
+    expose:
+      - "80"
+    depends_on:
+      - database
+    networks:
+      - backend-network
+      - frontend-network
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      # MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_HOST: ${MYSQL_HOST}
+
+  database:
+    build: ./mysql
+    command: mysqld --default-authentication-plugin=mysql_native_password
+    volumes: # En caso de tener problemas con el voúmen, correr el siguiente comando: docker-compose rm -fv;
+        - ${MYSQL_DATA}:/var/lib/mysql
+    restart: always
+    expose: 
+        - "3306"
+    # Para mapear el contenedor a nuestra computadora podemos descomentar la siguiente línea
+    # ports:
+    #   - "3306:3306"
+    networks:
+      - backend-network
+    environment:
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        # MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+networks:
+  backend-network:
+    name: backend-network
+  frontend-network:
+    name: frontend-network

@@ -12,9 +12,10 @@
 #include <linux/timekeeping.h>
 
 static int my_proc_show(struct seq_file *m, void *v){
+	
 	struct sysinfo systema;
 
-    seq_printf(m, "Tottal de Ram: %lu Free Ram:%lu  Mem Unit: %lu",systema.totalram, systema.freeram, systema.mem_unit);
+    seq_printf(m, "Tottal de Ram: %lu Free Ram:%lu  Mem Unit: %u ",systema.totalram, systema.freeram, systema.mem_unit);
    
     return 0;
 }

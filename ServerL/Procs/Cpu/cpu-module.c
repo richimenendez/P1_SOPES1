@@ -12,21 +12,14 @@
 #include <linux/timekeeping.h>
 
 static int my_proc_show(struct seq_file *m, void *v){
-	unsigned long get_time;
-    int sec, hr, min, tmp1, tmp2;
-  
-    
-    get_time = ktime_get_real_seconds();
+		struct sysinfo sistema;
+		//sistema = meminfo(&sistema);
 
-    sec = get_time % 60;
-    tmp1 = get_time / 60;
-    min = tmp1 % 60;
-    tmp2 = tmp1 / 60;
-    hr = (tmp2 % 24);
+		seq_printf(m,"%lld,$lld", sistema.totalram*sistema.mem_unit / (1048576) ,sistema.freeram* sistema.mem_unit/ (1048576) )
 
-    seq_printf(m, "<h1> Hora  %d:%d:%d </h1>",hr, min, sec);
-   
-    return 0;
+		return 0;
+
+
 }
 
 static ssize_t my_proc_write(struct file* file, const char __user *buffer, size_t count, loff_t *f_pos){

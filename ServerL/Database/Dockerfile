@@ -1,1 +1,5 @@
-FROM python:alpine3.7
+FROM mongo:latest
+COPY . /app
+WORKDIR /app
+EXPOSE 27017
+EXPOSE 27019

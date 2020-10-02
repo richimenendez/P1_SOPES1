@@ -15,7 +15,7 @@ static int my_proc_show(struct seq_file *m, void *v){
 		struct sysinfo sistema;
 		//sistema = meminfo(&sistema);
 
-		seq_printf(m,"%lld,$lld", sistema.totalram*sistema.mem_unit / (1048576) ,sistema.freeram* sistema.mem_unit/ (1048576) )
+		seq_printf(m,"%lld,$lld", sistema.totalram*sistema.mem_unit / (1048576) ,sistema.freeram* sistema.mem_unit/ (1048576) );
 
 		return 0;
 

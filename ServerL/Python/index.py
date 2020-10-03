@@ -1,10 +1,10 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 from flask_pymongo import PyMongo 
 from time import time
 from bson import json_util
 
 app = Flask(__name__)
-app.config['MONGO_URI'] = 'mongodb://localhost/proyecto'
+app.config['MONGO_URI'] = 'mongodb://192.168.1.18:27017/proyecto'
 mongo = PyMongo(app)
 
 
@@ -20,12 +20,12 @@ def crearNota():
     tmstmp = time()
     idN = ""
     if( autor and nota and tmstmp):
-        idN = mongo.db.notas.insert(
+        idN = mongo.db.notas.insert_one(
             {'autor':autor, 'nota':nota, 'tmstmp':tmstmp}
         )
     else:
         return {"message":"Faltan datos!!"}
-    return {"message":"Nota Creada con id: "+ idN + "  y timestamp: "+ tmstmp} 
+    return {"message":"Nota Creada con id!"} 
 
 
 @app.route("/verNotas",  methods=["GET"])

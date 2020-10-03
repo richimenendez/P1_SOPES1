@@ -14,8 +14,9 @@
 static int my_proc_show(struct seq_file *m, void *v){
 	
 	struct sysinfo systema;
+ 	si_meminfo (&systema);
 
-    seq_printf(m, "Tottal de Ram: %lu Free Ram:%lu  Mem Unit: %u ",systema.totalram, systema.freeram, systema.mem_unit);
+    seq_printf(m, "%lu;%lu}",systema.totalram, systema.freeram);
    
     return 0;
 }

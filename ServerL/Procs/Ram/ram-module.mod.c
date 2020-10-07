@@ -1,6 +1,9 @@
+#include <linux/build-salt.h>
 #include <linux/module.h>
 #include <linux/vermagic.h>
 #include <linux/compiler.h>
+
+BUILD_SALT;
 
 MODULE_INFO(vermagic, VERMAGIC_STRING);
 MODULE_INFO(name, KBUILD_MODNAME);
@@ -25,4 +28,4 @@ __attribute__((section(".modinfo"))) =
 "depends=";
 
 
-MODULE_INFO(srcversion, "05A59647EBBC26AC6E8B81C");
+MODULE_INFO(srcversion, "EF6260D4565E32D11F710F6");

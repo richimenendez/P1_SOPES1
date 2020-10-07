@@ -2,6 +2,7 @@
 #include <linux/init.h>
 #include <linux/proc_fs.h>
 #include <linux/sched.h>
+#include <linux/sched/signal.h>
 #include <linux/uaccess.h>
 #include <linux/fs.h>
 #include <linux/sysinfo.h>
@@ -17,6 +18,7 @@ static int my_proc_show(struct seq_file *m, void *v)
 	struct task_struct *hijos;
 	struct list_head *head;
 	int totalpor = 0;
+
 	for_each_process(tareas)
 	{
 
@@ -27,7 +29,7 @@ static int my_proc_show(struct seq_file *m, void *v)
 			list_for_each(head, &tareas->children)
 			{
 				hijos = list_entry(head, struct task_struct, sibling);
-				if (hijos->utime > 0)
+				if (hijos->utime > 0 && hijos->stime>0)
 				{
 					cutime = cutime + hijos->utime;
 					cstime = cstime + hijos->stime;
@@ -37,8 +39,8 @@ static int my_proc_show(struct seq_file *m, void *v)
 
 			int total_time = tareas->utime + tareas->stime + cutime + cstime;
 			int segundos = tareas->utime - (tareas->start_time / 100);
-			int porcentage = (100 * (total_time / 100)) / segundos;
-			if (porcentage > 0)
+			int porcentage =  (100*((total_time) / segundos))/100;
+			if (porcentage > 0 && porcentage<60)
 			{
 				totalpor = totalpor + porcentage;
 			}
@@ -65,7 +67,7 @@ static struct file_operations my_fops={
 	.release = single_release,
 	.read = seq_read,
 	.llseek = seq_lseek,
-	.write = my_proc_write
+	.write = 0
 };
 
 static int __init test_init(void)

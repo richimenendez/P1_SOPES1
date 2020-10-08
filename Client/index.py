@@ -3,7 +3,7 @@ import requests
 
 data = list()
 faker = Faker()
-url = "http://localhost:5001/"
+url = "http://3.22.221.7:5001/"
 def load_file():
     ruta_archivo = raw_input()
     print(ruta_archivo)

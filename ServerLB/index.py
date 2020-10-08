@@ -4,7 +4,7 @@ from bson import json_util
 import requests
 
 URL = "http://3.138.60.59:5000/"
-URL2 = "http://localhost:5000/"
+URL2 = "http://3.22.221.7:5000/"
 
 app = Flask(__name__)
 

@@ -24,31 +24,38 @@ def crearNota():
     ram2 = int(data2["RAML"])/int(data2["RAMT"])
     cpu1 = int(data1["CPU"])
     cpu2 = int(data2["CPU"])
-    ,llcap1 = data1["SIZE"]
-    cap2 = data2["SIZE"]
-
+    cap1 = int(data1["SIZE"])
+    cap2 = int(data2["SIZE"])
+    msg = "none"
     server = False
 
     if cap1 > cap2: 
         server = True
+        msg = "Servidor 2 tiene menos elementos"
     elif cap2 > cap1: 
         server = False
-    if ram1>ram2:
+        msg = "Servidor 1 tiene menos elementos"
+    elif ram1>ram2:
         server = True
+        msg = "Servidor 2 tiene mas RAM disponible"
     elif ram2>ram1:
         server = False
+        msg = "Servidor 1 tiene mas RAM disponible"
     elif(cpu1>cpu2): 
         server = True
+        msg = "Servidor 2 tiene mas CPU disponible"
     elif cpu2>cpu1:
         server = False
+        msg = "Servidor 1 tiene mas CPU disponible"
 
     if(not server):
         response = "Reenviando a Servidor 1"
-        requests.post(URL+"/crearNota",request.json)
+        requests.post(URL+"/crearNota",json = request.json)
     else:
+        requests.post(URL2+"/crearNota",json = request.json)
         response = "Reenviando a Servidor 2"
     #response = str(ram1) + "  -  "+str(ram2) + "  -  "+str(cpu1) + "  -  "+str(cpu2) + "  -  " 
-    return {"res":response,"data":data1}
+    return {"res":response,"data":msg}
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int("5001"), debug=True)

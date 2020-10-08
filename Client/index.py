@@ -3,7 +3,7 @@ import requests
 
 data = list()
 faker = Faker()
-url = "http://localhost:5000/"
+url = "http://localhost:5001/"
 def load_file():
     ruta_archivo = raw_input()
     print(ruta_archivo)
@@ -31,6 +31,7 @@ def send_data():
     uri = url +"crearNota"
     for x in data:
         req = requests.post(url=uri,json=x)
+        print(req.json())
 
     return 0
 

@@ -1,0 +1,40 @@
+version: '3.7'
+
+services:
+  python-api: 
+    build: ./ServerL/Python
+    container_name: py-api
+    volumes: 
+        - /proc:/proc
+    expose:
+      - "5000"
+    ports: 
+      - "5000:5000"
+    depends_on:
+      - mongo-database
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+  python-lb: 
+    build: ./ServerLB
+    container_name: py-lb
+    expose:
+      - "5001"
+    ports: 
+      - "5001:5001"
+    depends_on:
+      - python-api
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+  mongo-database:
+    image: mongo:latest
+    container_name: mng-db
+    volumes: 
+        - ./dbdata:/data/db
+    expose: 
+      - "27017"
+      - "27019"
+    ports:
+        - "27017:27017"
+        - "27019:27019"
+    environment:
+        MYSQL_ROOT_PASSWORD: password

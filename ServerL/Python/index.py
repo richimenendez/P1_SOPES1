@@ -39,7 +39,7 @@ def verNota():
 def verRAM():
     archivo = open("/proc/ram-module","r")
     ram = str(archivo.read()).split(";")
-    response = json_util.dumps({'RAM':100-int(100*(int(ram[1])/int(ram[0])))})
+    response = json_util.dumps({'RAM':int(100*(int(ram[1])/int(ram[0])))})
     archivo.close()
     return Response(response, mimetype='application/json')
 
